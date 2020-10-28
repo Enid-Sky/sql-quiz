@@ -201,7 +201,7 @@ class Database(object):
     """
 
     def __init__(self):
-        self.cursor, self.conn  = self.connect()
+        self.cursor, self.conn = self.connect()
 
     @staticmethod
     def connect():
@@ -245,7 +245,8 @@ class Database(object):
 
         # Print column names
         for i, col in enumerate(cols):
-            out += " " + ("{:^" + str(col['len']) + "}").format(col['name']) + " "
+            out += " " + \
+                ("{:^" + str(col['len']) + "}").format(col['name']) + " "
             if i == len(cols) - 1:
                 out += "\n"
             else:
@@ -271,7 +272,8 @@ class Database(object):
                 if isinstance(col, datetime.date):
                     col = col.strftime("%Y-%m-%d")
 
-                out += " " + ("{:" + str(cols[i]['len']) + "}").format(col) + " "
+                out += " " + \
+                    ("{:" + str(cols[i]['len']) + "}").format(col) + " "
                 if i == len(cols) - 1:
                     out += "\n"
                 else:
@@ -302,7 +304,8 @@ class Database(object):
             results = self.cursor.fetchall()
 
         except psycopg2.DatabaseError as e:
-            err = "There was a problem with your SQL syntax:\n\n\t{}\n".format(e)
+            err = "There was a problem with your SQL syntax:\n\n\t{}\n".format(
+                e)
             if error_on_empty:
                 raise ValueError(err)
             else:
@@ -495,7 +498,8 @@ class SQLQuiz(object):
                             print("\n\tCorrect!")
                             print(sql)
                             print("\n\tMoving on...\n")
-                            self.progress.mark_solved(problem.num, problem.task, sql)
+                            self.progress.mark_solved(
+                                problem.num, problem.task, sql)
                             return True
                         else:
                             print("\n(results do not match answer)\n")
@@ -516,7 +520,8 @@ def write_pickle():
     problems = []
     for i, p in enumerate(PROBLEMS):
         problem = Problem(num=i + 1, **p)
-        description, result = db.get_raw_result(problem.solution, error_on_empty=True)
+        description, result = db.get_raw_result(
+            problem.solution, error_on_empty=True)
         problem.solution_hash = problem.hash_solution(result)
         problem.solution = None
         problems.append(problem)
